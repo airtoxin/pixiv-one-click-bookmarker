@@ -7,6 +7,15 @@
 		{
 			"matches":["http://www.pixiv.net/member_illust.php?mode=medium&illust_id=*"],
 			"js":["js/add_bookmarker.js"]
+		},
+		{
+			"matches": [
+				"http://www.pixiv.net/member.php",
+				"http://www.pixiv.net/member_illust.php*",
+				"http://www.pixiv.net/bookmark.php?id=*",
+				"http://www.pixiv.net/stacc/*"
+			],
+			"js": [ "js/jquery-2.1.3.min.js", "js/follow.js" ]
 		}
 	]
 }
