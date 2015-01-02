@@ -5,7 +5,7 @@
 	"description":	"Add One-click Bookmark button on Pixiv",
 	"content_scripts": [
 		{
-			"matches":["http://www.pixiv.net/member_illust.php*"],
+			"matches":["http://www.pixiv.net/member_illust.php?mode=medium&illust_id=*"],
 			"js":["js/add_bookmarker.js"]
 		}
 	]
