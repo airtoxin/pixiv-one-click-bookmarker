@@ -44,5 +44,5 @@ if (bookmarker)
 {
 	bookmarker.innerText = "option";
 	var container = document.querySelector("div.bookmark-container");
-	container.insertBefore(star);
+	container.insertBefore(star, null);
 }
