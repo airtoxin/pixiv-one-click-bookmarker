@@ -4,7 +4,6 @@ var isFollow = function () {
 
 var onClickButton = function () {
 	var fd = new FormData( $('form[action="/bookmark_add.php"]')[0] );
-	console.log("@fd:", fd);
 	$.ajax( {
 		url: '/bookmark_add.php',
 		type: 'POST',
@@ -12,8 +11,7 @@ var onClickButton = function () {
 		processData: false,
 		contentType: false
 	} ).done( function ( res ) {
-		console.log("@res:", res);
-		$( '#oneclick_follow' ).text( '多分フォロー済み' );
+		$( '#oneclick_follow' ).text( '多分フォロー済み' ).unbind();
 	} );
 };
 

@@ -10,7 +10,7 @@
 		},
 		{
 			"matches": [
-				"http://www.pixiv.net/member.php",
+				"http://www.pixiv.net/member.php?id=*",
 				"http://www.pixiv.net/member_illust.php*",
 				"http://www.pixiv.net/bookmark.php?id=*",
 				"http://www.pixiv.net/stacc/*"
