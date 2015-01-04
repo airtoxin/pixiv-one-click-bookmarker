@@ -20,7 +20,8 @@ var PostToTumblr = ( function () {
 
 		self.handler = function () {
 			var info = self.getPageInfo();
-			self.getKey( function ( formKey, secureFormKey ) {
+			self.getKey( function ( formKey, secureFormKey, channelId ) {
+				info.channelId = channelId;
 				var payload = self.getPayload( formKey, info );
 				$.ajax( {
 					url: self.TUMBLR + '/svc/post/update',
@@ -57,8 +58,11 @@ var PostToTumblr = ( function () {
 
 		self.getKey = function ( callback ) {
 			$.get( self.TUMBLR + '/new/text' ).done( function ( res ) {
+				console.log("@res:", res);
 				var match = res.match( /<input type="hidden" name="form_key" value="(\w+)"\/>/ );
 				var formKey = match[ 1 ];
+				var channelId = res.match( /<input type="hidden" name="t" value="([0-9a-zA-Z-]+)"\/>/ )[ 1 ];
+				console.log("@channelId:", channelId);
 				$.ajax( {
 					url: self.TUMBLR + '/svc/secure_form_key',
 					type: 'POST',
@@ -67,7 +71,7 @@ var PostToTumblr = ( function () {
 					}
 				} ).done( function ( res, status, req ) {
 					var secureFormKey = req.getResponseHeader( 'X-tumblr-secure-form-key' );
-					callback( formKey, secureFormKey );
+					callback( formKey, secureFormKey, channelId );
 				} );
 			} );
 		};
@@ -75,7 +79,7 @@ var PostToTumblr = ( function () {
 		self.getPayload = function ( formKey, info ) {
 			return {
 				MAX_FILE_SIZE: '10485760',
-				channel_id: 'little-pretenders2',
+				channel_id: info.channelId,
 				context_id: '',
 				context_page: 'dashboard',
 				editor_type: 'rich',
