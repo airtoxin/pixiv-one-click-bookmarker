@@ -21,7 +21,7 @@ var PostToTumblr = ( function () {
 		self.handler = function () {
 			var info = self.getPageInfo();
 			self.getKey( function ( formKey, secureFormKey ) {
-				var payload = self.getPayload( formKey );
+				var payload = self.getPayload( formKey, info );
 				$.ajax( {
 					url: self.TUMBLR + '/svc/post/update',
 					type: 'POST',
@@ -33,7 +33,6 @@ var PostToTumblr = ( function () {
 					processData: false,
 					data: JSON.stringify( payload )
 				} ).done( function () {
-					console.log("@document.referer:", document.referer);
 					console.log("@arguments:", arguments);
 				} );
 			} );
@@ -44,6 +43,10 @@ var PostToTumblr = ( function () {
 			var url = document.location.href;
 			var description = $( 'p.caption' ).text();
 			var tags = $( 'a.text' ).map( function( i, t ){ return $( t ).text(); } ).toArray();
+			var imageTag = $( '.original-image' );
+			var imageUrl = imageTag.data( 'src' );
+			var imageWidth = imageTag.attr( 'width' );
+			var imageHeight = imageTag.attr( 'height' );
 			return {
 				title: title,
 				url: url,
@@ -69,28 +72,31 @@ var PostToTumblr = ( function () {
 			} );
 		};
 
-		self.getPayload = function ( formKey ) {
+		self.getPayload = function ( formKey, info ) {
 			return {
+				MAX_FILE_SIZE: '10485760',
 				channel_id: 'little-pretenders2',
 				context_id: '',
 				context_page: 'dashboard',
 				editor_type: 'rich',
 				form_key: formKey,
+				'images[o1]': 'https://pbs.twimg.com/media/B6iZiGZCQAAe3Bo.jpg',
 				'is_rich_text[one]': '0',
-				'is_rich_text[three]': '0',
 				'is_rich_text[two]': '1',
+				'is_rich_text[three]': '0',
 				post: {},
 				'post[date]': '',
-				'post[one]': '',
+				'post[photoset_layout]': '1',
+				'post[photoset_order]': 'o1',
 				'post[publish_on]': '',
 				'post[slug]': '',
 				'post[source_url]': 'http://',
 				'post[state]': '0 3',
-				'post[tags]': '',
-				'post[two]': '<p>hogehogehogehgoehgoehgoegheogheogheohgehogehgo</p>',
-				'post[type]': 'regular'
+				'post[tags]': info.tags.join( ',' ),
+				'post[two]': '<a href="' + info.url + '">' + info.title + '</a>',
+				'post[type]': 'photo'
 			};
-		}
+		};
 	};
 }() );
 
